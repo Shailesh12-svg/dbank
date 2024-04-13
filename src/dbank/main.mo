@@ -1,5 +1,6 @@
 import Debug "mo:base/Debug";
 import Nat "mo:base/Nat";
+import Int "mo:base/Int";
 
 actor DBank {
   var currentValue = 300;
@@ -20,12 +21,22 @@ actor DBank {
   };
 
   public func withdraw(amount : Nat) {
-    currentValue -= amount;
-    Debug.print("Hey the mentioned amount has been withdrawn and updated balance is :");
 
-    //Updated Balance
-    Debug.print(debug_show (currentValue));
+    let tempValue : Int = currentValue - amount;
+    if (tempValue >= 0) {
+      currentValue -= amount;
+      Debug.print("Hey the mentioned amount has been withdrawn and updated balance is :");
 
+      //Updated Balance
+      Debug.print(debug_show (currentValue));
+    } else {
+      Debug.print("The amount is too large ,current value is less than zero");
+    };
+  };
+
+  //Query calls
+  public query func checkBalance() : async Nat {
+    return currentValue;
   };
 
 };
